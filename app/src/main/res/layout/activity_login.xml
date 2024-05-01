@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".login"
+    android:background="@drawable/background">>
+
+    <EditText
+        android:id="@+id/editText_Name"
+        android:layout_width="330sp"
+        android:layout_height="65sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="260sp"
+        android:background="@drawable/custom_shape"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="10sp"
+        android:text="Name"
+        android:textColor="#CDCDCD"
+        android:textSize="21sp" />
+
+    <EditText
+        android:id="@+id/editText_Password"
+        android:layout_width="330sp"
+        android:layout_height="65sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="13sp"
+        android:background="@drawable/custom_shape"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="10sp"
+        android:text="Password"
+        android:textColor="#CDCDCD"
+        android:textSize="21sp" />
+
+    <TextView
+        android:id="@+id/text_ForgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250sp"
+        android:layout_marginTop="5sp"
+        android:text="Forget password?"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/button_Register"
+        android:layout_width="100sp"
+        android:layout_height="53sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/custom_shape"
+        android:text="Login"
+        android:textSize="18sp"
+        app:backgroundTint="#ED4D2D" />
+
+    <TextView
+        android:id="@+id/text_Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8sp"
+        android:text="Register"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp" />
+</LinearLayout>
