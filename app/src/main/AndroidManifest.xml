@@ -13,10 +13,10 @@
         android:theme="@style/Theme.BTL2"
         tools:targetApi="31">
         <activity
-            android:name=".register"
+            android:name=".Register"
             android:exported="false" />
         <activity
-            android:name=".login"
+            android:name=".Login"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
