@@ -9,19 +9,29 @@
     tools:context=".Login"
     android:background="@drawable/background">>
 
+    <TextView
+        android:text="@string/Register"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <EditText
         android:id="@+id/editText_Name"
         android:layout_width="330sp"
         android:layout_height="60sp"
         android:layout_gravity="center"
-        android:layout_marginTop="208sp"
+        android:layout_marginTop="10sp"
         android:background="@drawable/custom_shape"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10sp"
-        android:text="Name"
-        android:textColor="#CDCDCD"
-        android:textSize="20sp" />
+        android:hint="@string/name"
+        android:textColor="#020101"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/editText_Phone"
@@ -33,9 +43,10 @@
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10sp"
-        android:text="Phone"
-        android:textColor="#CDCDCD"
-        android:textSize="20sp" />
+        android:hint="@string/phone"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/editText_Password"
@@ -47,9 +58,10 @@
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10sp"
-        android:text="Password"
-        android:textColor="#CDCDCD"
-        android:textSize="20sp" />
+        android:hint="@string/password"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/editText_Email"
@@ -61,9 +73,10 @@
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10sp"
-        android:text="Email"
-        android:textColor="#CDCDCD"
-        android:textSize="20sp" />
+        android:hint="@string/email"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -88,7 +101,7 @@
             android:id="@+id/editText_Count"
             android:layout_width="65sp"
             android:layout_height="60sp"
-            android:layout_marginLeft="2sp"
+            android:layout_marginStart="2sp"
             android:layout_marginTop="13sp"
             android:background="@drawable/custom_shape"
             android:ems="10"
@@ -106,7 +119,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10sp"
         android:background="@drawable/custom_shape"
-        android:text="Register"
+        android:text="@string/register"
         android:textSize="18sp"
         app:backgroundTint="#ED4D2D" />
 
