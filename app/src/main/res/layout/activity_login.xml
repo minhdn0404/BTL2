@@ -9,18 +9,27 @@
     tools:context=".Login"
     android:background="@drawable/background">>
 
+    <TextView
+        android:text="@string/Login"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
     <EditText
         android:id="@+id/editText_Name"
         android:layout_width="330sp"
         android:layout_height="65sp"
         android:layout_gravity="center"
-        android:layout_marginTop="260sp"
+        android:layout_marginTop="10sp"
         android:background="@drawable/custom_shape"
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10sp"
-        android:text="Name"
-        android:textColor="#CDCDCD"
+        android:hint="Name"
+        android:textColor="#000000"
         android:textSize="21sp" />
 
     <EditText
@@ -33,8 +42,8 @@
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10sp"
-        android:text="Password"
-        android:textColor="#CDCDCD"
+        android:hint="Password"
+        android:textColor="#070404"
         android:textSize="21sp" />
 
     <TextView
@@ -48,7 +57,7 @@
         android:textSize="15sp" />
 
     <Button
-        android:id="@+id/button_Register"
+        android:id="@+id/button_login"
         android:layout_width="100sp"
         android:layout_height="53sp"
         android:layout_gravity="center"
@@ -59,7 +68,7 @@
         app:backgroundTint="#ED4D2D" />
 
     <TextView
-        android:id="@+id/text_Login"
+        android:id="@+id/text_Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

@@ -26,17 +26,20 @@ public class FirebaseAPI {
     public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
     static protected FirebaseFirestore fStore = FirebaseFirestore.getInstance();
 
-    public static void signUp(Context context, String email, String password) {
+    public static void signUp(Context context, String email, String password, String username, String phone) {
         fAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 FirebaseUser user = fAuth.getCurrentUser();
                 Toast.makeText(context, "Account Created!", Toast.LENGTH_SHORT).show();
                 assert user != null;
+
                 DocumentReference df = fStore.collection("Users").document(user.getUid());
                 Map<String, Object> userInfo = new HashMap<>();
                 userInfo.put("UserEmail", email);
                 userInfo.put("UserPassword", password);
+                userInfo.put("UserName", username);
+                userInfo.put("UserPhone", phone);
                 userInfo.put("IsAdmin", false);
 
                 df.set(userInfo);
