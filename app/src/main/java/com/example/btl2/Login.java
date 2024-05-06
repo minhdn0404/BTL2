@@ -29,7 +29,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
-    EditText editTextName, editTextPassword;
+    EditText editTextEmail, editTextPassword;
     Button btnLogin;
     TextView textViewRegister;
     FirebaseAuth mAuth;
@@ -57,7 +57,7 @@ public class Login extends AppCompatActivity {
             return insets;
         });
 
-        editTextName = findViewById(R.id.editText_Name);
+        editTextEmail = findViewById(R.id.editText_Email);
         editTextPassword = findViewById(R.id.editText_Password);
         btnLogin = findViewById(R.id.button_login);
         textViewRegister = findViewById(R.id.text_Register);
@@ -75,12 +75,12 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = editTextName.getText().toString().trim();
+                String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(username)) {
-                    editTextName.setError("Enter username");
-                    editTextName.requestFocus();
+                if (TextUtils.isEmpty(email)) {
+                    editTextEmail.setError("Enter username");
+                    editTextEmail.requestFocus();
                     return;
                 }
 
@@ -90,38 +90,41 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                DatabaseReference df = FirebaseDatabase.getInstance().getReference("users");
-                Query checkUserDB = df.orderByChild("username").equalTo(username);
+//                DatabaseReference df = FirebaseDatabase.getInstance().getReference("users");
+//                Query checkUserDB = df.orderByChild("username").equalTo(email);
 
-                checkUserDB.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                String passwordFromDB = userSnapshot.child("password").getValue(String.class);
+                FirebaseAPI.login(Login.this, email, password);
 
-                                if (password.equals(passwordFromDB)) {
-                                    editTextName.setError(null);
-                                    editTextPassword.setError(null);
-                                    Intent intent = new Intent(Login.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    editTextPassword.setError("Incorrect password");
-                                    editTextPassword.requestFocus();
-                                }
-                            }
-                        } else {
-                            editTextName.setError("User does not exist");
-                            editTextName.requestFocus();
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle error
-                    }
-                });
+//                checkUserDB.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if (snapshot.exists()) {
+//                            for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+//                                String passwordFromDB = userSnapshot.child("password").getValue(String.class);
+//
+//                                if (password.equals(passwordFromDB)) {
+//                                    editTextName.setError(null);
+//                                    editTextPassword.setError(null);
+//                                    Intent intent = new Intent(Login.this, MainActivity.class);
+//                                    startActivity(intent);
+//                                    finish();
+//                                } else {
+//                                    editTextPassword.setError("Incorrect password");
+//                                    editTextPassword.requestFocus();
+//                                }
+//                            }
+//                        } else {
+//                            editTextName.setError("User does not exist");
+//                            editTextName.requestFocus();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                        // Handle error
+//                    }
+//                });
             }
         });
 

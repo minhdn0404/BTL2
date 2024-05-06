@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.btl2.Login;
+import com.example.btl2.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -58,11 +60,12 @@ public class FirebaseAPI {
             public void onSuccess(AuthResult authResult) {
                 Toast.makeText(context, "Login succeeded!", Toast.LENGTH_SHORT).show();
                 checkIsAdmin(context);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Failed to Login!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Email or password wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -76,6 +79,9 @@ public class FirebaseAPI {
             } else {
 //                Intent intent = new Intent(context, User.class);
 //                startActivity(context, intent, null);
+
+                Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
+                startActivity(context, intent, null);
             }
         });
     }
