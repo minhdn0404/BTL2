@@ -106,10 +106,7 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Password must be >= 6", Toast.LENGTH_SHORT).show();
                 }
 
-                UserClass userClass = new UserClass(username, phone, email, password);
-                reference.child(username).setValue(userClass);
-
-                Toast.makeText(Register.this, "Register Success", Toast.LENGTH_SHORT).show();
+                FirebaseAPI.signUp(Register.this, email, password, username, phone);
 
             }
         });

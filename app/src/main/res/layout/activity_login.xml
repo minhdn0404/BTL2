@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"/>
     
     <EditText
-        android:id="@+id/editText_Name"
+        android:id="@+id/editText_Email"
         android:layout_width="330sp"
         android:layout_height="65sp"
         android:layout_gravity="center"
@@ -28,7 +28,7 @@
         android:ems="10"
         android:inputType="text"
         android:paddingLeft="10sp"
-        android:hint="Name"
+        android:hint="Email"
         android:textColor="#000000"
         android:textSize="21sp" />
 
