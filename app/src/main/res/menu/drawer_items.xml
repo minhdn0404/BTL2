@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/group1">
+
+        <item
+            android:id="@+id/itemSetting"
+            android:title="Settings"
+            android:icon="@drawable/settings_icon"/>
+
+        <item
+            android:id="@+id/itemHistory"
+            android:title="History"
+            android:icon="@drawable/history_icon"/>
+    </group>
+
+    <group
+        android:id="@+id/group2">
+
+        <item
+            android:id="@+id/itemTermsAndConditions"
+            android:title="Terms and Conditions"
+            android:icon="@drawable/terms_and_conditions_icon"/>
+
+        <item
+            android:id="@+id/itemAboutUs"
+            android:title="Ablout us"
+            android:icon="@drawable/about_us_icon"/>
+
+        <item
+            android:id="@+id/itemShare"
+            android:title="Share"
+            android:icon="@drawable/share_icon"/>
+    </group>
+
+    <group
+        android:id="@+id/group3">
+
+        <item
+            android:id="@+id/itemLogOut"
+            android:title="Log out"
+            android:icon="@drawable/logout_icon"/>
+    </group>
+
+</menu>
