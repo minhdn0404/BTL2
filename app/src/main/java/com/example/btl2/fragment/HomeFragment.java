@@ -3,64 +3,48 @@ package com.example.btl2.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.btl2.HomeModel;
+import com.example.btl2.HomeModelAdapter;
 import com.example.btl2.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    RecyclerView homeRecycler;
+    List<HomeModel> homeModelList;
+    HomeModelAdapter homeModelAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        homeRecycler = root.findViewById(R.id.home_Recycler);
+
+        homeModelList = new ArrayList<>();
+        homeModelList.add(new HomeModel(R.drawable.image1,100,20,"M42-EOS","11:00 - 21:00 08/05/2024"));
+        homeModelList.add(new HomeModel(R.drawable.image2,150,40,"Canon 750D","12:00 - 20:00 09/05/2024"));
+        homeModelList.add(new HomeModel(R.drawable.image3,170,20,"Canon 1DX","13:00 - 23:00 11/05/2024"));
+        homeModelList.add(new HomeModel(R.drawable.image4,130,10,"Canon 5D2","14:00 - 22:00 12/05/2024"));
+        homeModelList.add(new HomeModel(R.drawable.image5,120,20,"Canon 600D","15:00 - 22:00 12/05/2024"));
+        homeModelList.add(new HomeModel(R.drawable.image1,190,70,"Nikon D300","12:00 - 22:00 16/05/2024"));
+        homeModelList.add(new HomeModel(R.drawable.image2,140,30,"Sony A73","11:00 - 22:00 18/05/2024"));
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        homeModelAdapter = new HomeModelAdapter(getActivity(), homeModelList);
+        homeRecycler.setAdapter(homeModelAdapter);
+        homeRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        homeRecycler.setHasFixedSize(true);
+        homeRecycler.setNestedScrollingEnabled(false);
+        return root;
     }
 }
