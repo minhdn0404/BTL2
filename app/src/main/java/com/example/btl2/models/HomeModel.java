@@ -1,4 +1,4 @@
-package com.example.btl2;
+package com.example.btl2.models;
 
 public class HomeModel {
     int image, startPrice, stepPrice;

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.btl2.models.HomeModel;
+
 import java.util.List;
 
 public class HomeModelAdapter extends RecyclerView.Adapter<HomeModelAdapter.ViewHolder> {

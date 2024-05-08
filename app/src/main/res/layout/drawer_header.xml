@@ -23,6 +23,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/menu_Nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dinh Xuan Hien"
@@ -33,6 +34,7 @@
     </TextView>
 
     <TextView
+        android:id="@+id/menu_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dinhxuanhien1410@gmail.com"

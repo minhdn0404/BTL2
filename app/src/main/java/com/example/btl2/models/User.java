@@ -1,13 +1,18 @@
-package com.example.btl2;
+package com.example.btl2.models;
 
-public class UserClass {
-    String username, phone, email, password;
+public class User {
+    private String username, phone, email, password;
+    private boolean isAdmin;
 
-    public UserClass(String username, String phone, String email, String password) {
+    public User() {
+    }
+
+    public User(String username, String phone, String email, String password, boolean isAdmin) {
         this.username = username;
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.isAdmin = isAdmin;
     }
 
     public String getUsername() {
@@ -40,5 +45,13 @@ public class UserClass {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

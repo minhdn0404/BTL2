@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import com.example.btl2.fragment.BaseActivity;
 import com.example.btl2.fragment.BidsFragment;
 import com.example.btl2.fragment.HomeFragment;
 import com.example.btl2.fragment.MeFragment;
@@ -31,12 +32,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-//    FirebaseAuth auth;
-//    Button btnLogout;
-//    TextView textView;
-//    FirebaseUser user;
     DrawerLayout drawerLayout;
     ImageButton buttonDrawerToggle;
     NavigationView navigationView;
@@ -57,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 drawerLayout.open();
+                ((TextView) findViewById(R.id.menu_Nickname)).setText(user.getUsername());
+                ((TextView) findViewById(R.id.menu_Email)).setText(user.getEmail());
             }
         });
 

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.btl2.HomeModel;
+import com.example.btl2.models.HomeModel;
 import com.example.btl2.HomeModelAdapter;
 import com.example.btl2.R;
 

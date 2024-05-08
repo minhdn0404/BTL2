@@ -1,34 +1,30 @@
 package com.example.btl2.api;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.text.BoringLayout;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.btl2.Login;
-import com.example.btl2.MainActivity;
+import com.example.btl2.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseAPI {
     public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    static protected FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+    private static final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-    public static void signUp(Context context, String email, String password, String username, String phone) {
+    public static Task<User> signUp(Context context, String email, String password, String username, String phone) {
+        TaskCompletionSource<User> taskCompletionSource = new TaskCompletionSource<>();
         fAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -36,53 +32,55 @@ public class FirebaseAPI {
                 Toast.makeText(context, "Account Created!", Toast.LENGTH_SHORT).show();
                 assert user != null;
 
-                DocumentReference df = fStore.collection("Users").document(user.getUid());
-                Map<String, Object> userInfo = new HashMap<>();
-                userInfo.put("UserEmail", email);
-                userInfo.put("UserPassword", password);
-                userInfo.put("UserName", username);
-                userInfo.put("UserPhone", phone);
-                userInfo.put("IsAdmin", false);
+                DatabaseReference userData = ref.child("Users").child(user.getUid());
+                userData.child("username").setValue(username);
+                userData.child("password").setValue(password);
+                userData.child("email").setValue(email);
+                userData.child("phone").setValue(phone);
+                userData.child("isAdmin").setValue(false);
 
-                df.set(userInfo);
+                User newUser = new User(username, phone, email, password, false);
+                taskCompletionSource.setResult(newUser);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(context, "Failed to Create Account!", Toast.LENGTH_SHORT).show();
+                taskCompletionSource.setResult(null);
             }
         });
+        return taskCompletionSource.getTask();
     }
 
-    public static void login(Context context, String email, String password) {
+    public static Task<User> login(Context context, String email, String password) {
+        TaskCompletionSource<User> taskCompletionSource = new TaskCompletionSource<>();
         fAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 Toast.makeText(context, "Login succeeded!", Toast.LENGTH_SHORT).show();
-                checkIsAdmin(context);
 
+                // get user
+                DatabaseReference userAPI = ref.child("Users").child(fAuth.getCurrentUser().getUid());;
+                userAPI.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        taskCompletionSource.setResult(user);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(context, "Email or password wrong", Toast.LENGTH_SHORT).show();
+                taskCompletionSource.setResult(null);
             }
         });
-    }
-
-    public static void checkIsAdmin(Context context) {
-        DocumentReference df = fStore.collection("Users").document(fAuth.getCurrentUser().getUid());
-        df.get().addOnSuccessListener(documentSnapshot -> {
-            if (Boolean.TRUE.equals(documentSnapshot.getBoolean("IsAdmin"))) {
-//                Intent intent = new Intent(context, Admin.class);
-//                startActivity(context, intent, null);
-            } else {
-//                Intent intent = new Intent(context, User.class);
-//                startActivity(context, intent, null);
-
-                Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-                startActivity(context, intent, null);
-            }
-        });
+        return taskCompletionSource.getTask();
     }
 }
