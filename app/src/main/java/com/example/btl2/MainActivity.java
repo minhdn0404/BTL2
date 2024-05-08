@@ -15,8 +15,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import com.example.btl2.fragment.BidsFragment;
+import com.example.btl2.fragment.HomeFragment;
+import com.example.btl2.fragment.MeFragment;
+import com.example.btl2.fragment.NotiFragment;
+import com.example.btl2.fragment.ProductsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,15 +40,18 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageButton buttonDrawerToggle;
     NavigationView navigationView;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        replaceFragment(new HomeFragment());
 
         drawerLayout = findViewById(R.id.drawerLayout);
         buttonDrawerToggle = findViewById(R.id.buttonDrawerToggle);
         navigationView = findViewById(R.id.navigationView);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         buttonDrawerToggle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +96,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.item_Home) {
+                    replaceFragment(new HomeFragment());
+                }
+                if (menuItem.getItemId() == R.id.item_Bids) {
+                    replaceFragment(new BidsFragment());
+                }
+                if (menuItem.getItemId() == R.id.item_Noti) {
+                    replaceFragment(new NotiFragment());
+                }
+                if (menuItem.getItemId() == R.id.item_Products) {
+                    replaceFragment(new ProductsFragment());
+                }
+                if (menuItem.getItemId() == R.id.item_Me) {
+                    replaceFragment(new MeFragment());
+                }
+                return true;
+            }
+        });
+
 //        auth = FirebaseAuth.getInstance();
 //        btnLogout = findViewById(R.id.logOut);
 //        textView = findViewById(R.id.userDetails);
@@ -105,5 +140,12 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout_ActivityMain, fragment);
+        fragmentTransaction.commit();
     }
 }
