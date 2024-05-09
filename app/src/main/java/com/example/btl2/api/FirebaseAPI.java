@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.btl2.models.Product;
 import com.example.btl2.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class FirebaseAPI {
     public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
@@ -78,6 +81,32 @@ public class FirebaseAPI {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(context, "Email or password wrong", Toast.LENGTH_SHORT).show();
+                taskCompletionSource.setResult(null);
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
+    public static Task<ArrayList<Product>> getProductsByOwner(String uid) {
+        TaskCompletionSource<ArrayList<Product>> taskCompletionSource = new TaskCompletionSource<>();
+        DatabaseReference products = ref.child("Products");
+
+        products.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Product> ans = new ArrayList<>();
+                for (DataSnapshot productSnapshot : snapshot.getChildren()) {
+                    if (productSnapshot.child("owner").getValue(String.class) == uid) {
+                        Product product = productSnapshot.getValue(Product.class);
+                        product.setId(productSnapshot.getKey());
+                        ans.add(product);
+                    }
+                }
+                taskCompletionSource.setResult(ans);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
                 taskCompletionSource.setResult(null);
             }
         });
