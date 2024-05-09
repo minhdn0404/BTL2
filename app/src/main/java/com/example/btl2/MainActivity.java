@@ -87,6 +87,10 @@ public class MainActivity extends BaseActivity {
 
                 if (itemId == R.id.itemLogOut) {
                     //thuc hien hanh dong
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                    finish();
                 }
 
                 drawerLayout.close();
