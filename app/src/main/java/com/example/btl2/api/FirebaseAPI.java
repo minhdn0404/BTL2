@@ -1,6 +1,11 @@
 package com.example.btl2.api;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,13 +24,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
 public class FirebaseAPI {
     public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-
+    private static final FirebaseStorage fStorage = FirebaseStorage.getInstance();
     public static Task<User> signUp(Context context, String email, String password, String username, String phone) {
         TaskCompletionSource<User> taskCompletionSource = new TaskCompletionSource<>();
         fAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -40,6 +48,7 @@ public class FirebaseAPI {
                 userData.child("password").setValue(password);
                 userData.child("email").setValue(email);
                 userData.child("phone").setValue(phone);
+                userData.child("avatar").setValue("gs://auctionapp-1f81e.appspot.com/images/default_avatar.jpg");
                 userData.child("isAdmin").setValue(false);
 
                 User newUser = new User(username, phone, email, password, false);
@@ -110,6 +119,56 @@ public class FirebaseAPI {
                 taskCompletionSource.setResult(null);
             }
         });
+        return taskCompletionSource.getTask();
+    }
+
+    public static void addProduct(Product product) {
+        DatabaseReference newProduct = ref.child("Products").child(product.getId());
+
+        newProduct.child("auctionStartTime").setValue(product.getAuctionStartTime());
+        newProduct.child("auctionTime").setValue(product.getAuctionTime());
+        newProduct.child("currentPrice").setValue(product.getCurrentPrice());
+        newProduct.child("description").setValue(product.getDescription());
+        newProduct.child("image").setValue(product.getImage());
+        newProduct.child("name").setValue(product.getName());
+        newProduct.child("owner").setValue(product.getOwner());
+        newProduct.child("startPrice").setValue(product.getStartPrice());
+        newProduct.child("stepPrice").setValue(product.getStepPrice());
+    }
+
+    public static Task<Boolean> putImageOnStorage(String uri) {
+        TaskCompletionSource<Boolean> taskCompletionSource = new TaskCompletionSource<>();
+        fStorage.getReference().child("images").putFile(Uri.parse(uri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                taskCompletionSource.setResult(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                taskCompletionSource.setResult(false);
+            }
+        });
+
+        return taskCompletionSource.getTask();
+    }
+
+    public static Task<Bitmap> getImageFromStorage(String uri) {
+        TaskCompletionSource<Bitmap> taskCompletionSource = new TaskCompletionSource<>();
+        long MAX_BYTES = 1024 * 1024;
+        fStorage.getReferenceFromUrl(uri).getBytes(MAX_BYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                taskCompletionSource.setResult(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                taskCompletionSource.setResult(null);
+            }
+        });
+
         return taskCompletionSource.getTask();
     }
 }
