@@ -105,8 +105,10 @@ public class Register extends BaseActivity {
                 }
 
                 signUp(email, password, username, phone);
-                Intent intent = new Intent(Register.this, MainActivity.class);
-                startActivity(intent);
+                if (user != null) {
+                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

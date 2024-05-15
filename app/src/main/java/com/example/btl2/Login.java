@@ -85,9 +85,10 @@ public class Login extends BaseActivity {
                 }
 
                 login(email, password);
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                startActivity(intent);
-
+                if (user != null) {
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
