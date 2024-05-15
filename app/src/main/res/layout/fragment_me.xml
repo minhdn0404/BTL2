@@ -96,7 +96,7 @@
                 android:paddingLeft="13dp"
                 android:text="User Name:"
                 android:textColor="@color/black"
-                android:textSize="22dp"
+                android:textSize="21dp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -125,7 +125,7 @@
                 android:paddingLeft="13dp"
                 android:text="Email:"
                 android:textColor="@color/black"
-                android:textSize="22dp"
+                android:textSize="21dp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -154,7 +154,7 @@
                 android:paddingLeft="13dp"
                 android:text="Phone Number:"
                 android:textColor="@color/black"
-                android:textSize="22dp"
+                android:textSize="21dp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -184,7 +184,7 @@
                 android:paddingLeft="13dp"
                 android:text="Address:"
                 android:textColor="@color/black"
-                android:textSize="22dp"
+                android:textSize="21dp"
                 android:textStyle="bold"/>
 
             <TextView
