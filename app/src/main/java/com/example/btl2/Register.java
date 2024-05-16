@@ -38,18 +38,6 @@ public class Register extends BaseActivity {
     Button btnRegister;
     TextView textViewLogin;
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,10 +93,6 @@ public class Register extends BaseActivity {
                 }
 
                 signUp(email, password, username, phone);
-                if (user != null) {
-                    Intent intent = new Intent(Register.this, MainActivity.class);
-                    startActivity(intent);
-                }
             }
         });
 
@@ -149,6 +133,10 @@ public class Register extends BaseActivity {
             user = result;
             if (dialog.isShowing())
                 dialog.dismiss();
+            if (user != null) {
+                Intent intent = new Intent(Register.this, MainActivity.class);
+                startActivity(intent);
+            }
         }
     }
 

@@ -32,19 +32,6 @@ public class Login extends BaseActivity {
     EditText editTextEmail, editTextPassword;
     Button btnLogin;
     TextView textViewRegister;
-    FirebaseAuth mAuth;
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +42,6 @@ public class Login extends BaseActivity {
         editTextPassword = findViewById(R.id.editText_Password);
         btnLogin = findViewById(R.id.button_login);
         textViewRegister = findViewById(R.id.text_Register);
-        mAuth = FirebaseAuth.getInstance();
 
         textViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,10 +71,6 @@ public class Login extends BaseActivity {
                 }
 
                 login(email, password);
-                if (user != null) {
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
-                }
             }
         });
 
@@ -151,6 +133,10 @@ public class Login extends BaseActivity {
             @Override
             protected void onPostExecute(User result) {
                 user = result;
+                if (user != null) {
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         }.execute();
     }

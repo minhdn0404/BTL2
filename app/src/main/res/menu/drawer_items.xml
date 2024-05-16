@@ -25,13 +25,8 @@
 
         <item
             android:id="@+id/itemAboutUs"
-            android:title="Ablout us"
+            android:title="About us"
             android:icon="@drawable/about_us_icon"/>
-
-        <item
-            android:id="@+id/itemShare"
-            android:title="Share"
-            android:icon="@drawable/share_icon"/>
     </group>
 
     <group

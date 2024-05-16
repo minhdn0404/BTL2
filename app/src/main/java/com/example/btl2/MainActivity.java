@@ -1,6 +1,7 @@
 package com.example.btl2;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,10 +80,9 @@ public class MainActivity extends BaseActivity {
 
                 if (itemId == R.id.itemAboutUs) {
                     //thuc hien hanh dong
-                }
-
-                if (itemId == R.id.itemShare) {
-                    //thuc hien hanh dong
+                    String uriString = "https://github.com/minhdn0404/BTL2";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
+                    startActivity(intent);
                 }
 
                 if (itemId == R.id.itemLogOut) {
@@ -120,29 +120,6 @@ public class MainActivity extends BaseActivity {
                 return true;
             }
         });
-
-//        auth = FirebaseAuth.getInstance();
-//        btnLogout = findViewById(R.id.logOut);
-//        textView = findViewById(R.id.userDetails);
-//        user = auth.getCurrentUser();
-//        if (user == null) {
-//            Intent intent = new Intent(getApplicationContext(), Login.class);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            textView.setText(user.getDisplayName());
-//        }
-//
-//        btnLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(getApplicationContext(), Login.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
-
     }
 
     private void replaceFragment(Fragment fragment) {
