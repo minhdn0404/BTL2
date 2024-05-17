@@ -25,7 +25,7 @@
             android:id="@+id/productNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:textSize="27sp"
             android:textStyle="bold"
             android:paddingTop="8dp"
             android:text="Tên sản phẩm" />
@@ -42,7 +42,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:text="Giá hiện tại: 0 VNĐ"
+            android:text="Current Deal: $150"
+            android:textSize="18sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="Minimum Bid: $25"
             android:textSize="18sp"
             android:textColor="@color/black" />
 
@@ -51,32 +59,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:text="Thời gian còn lại: 00:00:00"
+            android:text="Time remaining: 15:24:39"
             android:textSize="18sp"
             android:textColor="@color/black" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:text="Lịch sử đấu giá"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bidHistoryRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp" >
-
-        </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:background="@drawable/shape_custom">
+            android:background="@drawable/shape_custom"
+            android:layout_marginVertical="10dp">
 
             <Button
                 android:id="@+id/bidButton"
@@ -113,20 +105,13 @@
             android:paddingTop="8dp"
             android:text="Tên người bán: John Doe" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:text="Bình luận và đánh giá"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp" />
-
+        <Button
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:text="Back"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
