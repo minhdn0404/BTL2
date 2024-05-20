@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="10"
         android:background="@color/white"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:nestedScrollingEnabled="false">
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,36 +56,35 @@
                 android:layout_height="wrap_content"
                 android:text="Hình ảnh sản phẩm:"
                 android:layout_marginStart="10dp"
-                android:textColor="#404040"
+                android:textColor="@color/black"
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="200dp"
                 android:orientation="horizontal"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="5dp">
 
                 <Button
-                    android:layout_width="60dp"
+                    android:id="@+id/addProductPicture"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:padding="15dp"
-                    android:text="Thêm hình"
+                    android:text="Thay đổi hình"
+                    android:layout_gravity="center"
                     android:textSize="13sp"
-                    android:layout_weight="2"/>
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"/>
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/image4"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"/>
+                <ListView
+                    android:id="@+id/productImages"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:nestedScrollingEnabled="true">
+                </ListView>
 
             </LinearLayout>
 
@@ -92,161 +92,204 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginHorizontal="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/imageError"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="Cần ít nhất 1 hình ảnh"
+                    android:textColor="#FF0000"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:text="Tên sản phẩm:"
-                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:layout_weight="1"
                     android:textColor="#404040"/>
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:id="@+id/productNameEditText"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:hint="VD: Chìa khóa vạn năng"
-                    android:textColorHint="#DADADA"
-                    android:layout_marginEnd="10dp"/>
+                    android:textColorHint="#DADADA"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:text="Mô tả sản phẩm:"
-                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:layout_weight="1"
                     android:textColor="#404040"/>
 
                 <EditText
-                    android:layout_width="120dp"
+                    android:id="@+id/productDescriptionEditText"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:hint="VD: đẹp 95% ít trầy"
-                    android:textColorHint="#DADADA"
-                    android:layout_marginEnd="10dp"/>
+                    android:textColorHint="#DADADA" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginVertical="15dp">
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:text="Thời gian bắt đầu:"
-                    android:layout_marginStart="10dp"
-                    android:textColor="#404040"/>
+                    android:gravity="center_vertical"
+                    android:textColor="#404040"
+                    android:layout_weight="1"/>
 
-                <TimePicker
-                    android:id="@+id/timePicker"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/editTextStartTime"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:timePickerMode="spinner"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="5dp"/>
-
-                <DatePicker
-                    android:id="@+id/datePicker1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:calendarViewShown="true"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"/>
-
+                    android:hint="HH-mm dd-MM-yyyy"
+                    android:textColorHint="#DADADA"
+                    android:layout_weight="2"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="10dp">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/timeError"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="Thời gian bắt đầu không được nhỏ hơn thời gian kết thúc"
+                    android:textColor="#FF0000"
+                    android:layout_weight="2"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:text="Thời gian kết thúc:"
-                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
                     android:textColor="#404040"/>
 
-                <TimePicker
-                    android:id="@+id/timePicker2"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/editTextEndTime"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:timePickerMode="spinner"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"/>
-
-                <DatePicker
-                    android:id="@+id/datePicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:calendarViewShown="true"
-                    android:layout_gravity="center" />
+                    android:layout_weight="2"
+                    android:hint="HH-mm dd-MM-yyyy"
+                    android:textColorHint="#DADADA"
+                    android:focusable="false"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:weightSum="6">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Giá khởi điểm"
-                    android:layout_weight="1"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="Giá khởi điểm:"
+                    android:gravity="center_vertical"
+                    android:layout_weight="2"
                     android:textColor="#404040"/>
 
                 <EditText
-                    android:layout_width="120dp"
+                    android:id="@+id/startPriceEditText"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="10dp"
+                    android:layout_weight="3"
                     android:hint="VD: 100"
-                    android:textColorHint="#C6C6C6"/>
+                    android:textColorHint="#DADADA" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="dong"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:weightSum="6">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:text="Bước giá nhỏ nhất:"
-                    android:layout_weight="1"
-                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:layout_weight="2"
                     android:textColor="#404040"/>
 
                 <EditText
-                    android:layout_width="120dp"
+                    android:id="@+id/stepPriceEditText"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="10dp"
+                    android:layout_weight="3"
                     android:hint="VD: 20"
-                    android:textColorHint="#C6C6C6"/>
+                    android:textColorHint="#DADADA" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="dong"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
 
             </LinearLayout>
 
         </LinearLayout>
-
-
-
 
     </ScrollView>
 
@@ -262,6 +305,7 @@
         android:layout_weight="0.1">
 
         <Button
+            android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
@@ -275,12 +319,13 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <FrameLayout
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2" />
 
         <Button
+            android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
