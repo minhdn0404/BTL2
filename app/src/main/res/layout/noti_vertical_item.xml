@@ -15,7 +15,8 @@
             android:layout_width="180dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/image1" />
+            app:srcCompat="@drawable/image1"
+            android:padding="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,15 +29,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Bạn có đơn hàng đang trên đường giao"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:translationX="0dp"
+                android:paddingLeft="5dp" />
 
             <TextView
                 android:id="@+id/textNoti2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:rotation="0"
                 android:text="Đơn hàng của bạn sẽ được giao trong 1-2 ngày tới."
-                android:textSize="16sp" />
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:translationX="0dp"
+                android:translationY="0dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="5dp"/>
         </LinearLayout>
 
     </LinearLayout>
