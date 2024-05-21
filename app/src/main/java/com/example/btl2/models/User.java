@@ -1,17 +1,24 @@
 package com.example.btl2.models;
 
+import android.graphics.Bitmap;
+
 public class User {
+
+    private String id;
     private String username, phone, email, password;
+
+    private Bitmap avatar;
     private boolean isAdmin;
 
     public User() {
     }
 
-    public User(String username, String phone, String email, String password, boolean isAdmin) {
+    public User(String username, String phone, String email, String password, Bitmap avatar, boolean isAdmin) {
         this.username = username;
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.avatar = avatar;
         this.isAdmin = isAdmin;
     }
 
@@ -53,5 +60,21 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Bitmap getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Bitmap avatar) {
+        this.avatar = avatar;
     }
 }

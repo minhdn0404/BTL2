@@ -1,22 +1,28 @@
 package com.example.btl2.models;
 
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Product {
     private String id;
-    private String name, owner, image, description;
-    private String auctionStartTime, auctionTime;
+    private String name, owner, description;
+    private ArrayList<Bitmap> image;
+    private String auctionStartTime, auctionEndTime;
     private int startPrice, currentPrice, stepPrice;
 
     public Product() {
     }
 
-    public Product(String id, String name, String owner, String image, String description, String auctionStartTime, String auctionTime, int startPrice, int currentPrice, int stepPrice) {
+    public Product(String id, String name, String owner, String description, ArrayList<Bitmap> image, String auctionStartTime, String auctionEndTime, int startPrice, int currentPrice, int stepPrice) {
         this.id = id;
         this.name = name;
         this.owner = owner;
-        this.image = image;
         this.description = description;
+        this.image = image;
         this.auctionStartTime = auctionStartTime;
-        this.auctionTime = auctionTime;
+        this.auctionEndTime = auctionEndTime;
         this.startPrice = startPrice;
         this.currentPrice = currentPrice;
         this.stepPrice = stepPrice;
@@ -38,12 +44,8 @@ public class Product {
         this.owner = owner;
     }
 
-    public String getImage() {
+    public ArrayList<Bitmap> getImage() {
         return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getDescription() {
@@ -63,11 +65,11 @@ public class Product {
     }
 
     public String getAuctionTime() {
-        return auctionTime;
+        return auctionEndTime;
     }
 
-    public void setAuctionTime(String auctionTime) {
-        this.auctionTime = auctionTime;
+    public void setAuctionTime(String auctionEndTime) {
+        this.auctionEndTime = auctionEndTime;
     }
 
     public int getStartPrice() {

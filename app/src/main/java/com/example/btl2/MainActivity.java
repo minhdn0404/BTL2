@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -54,9 +55,12 @@ public class MainActivity extends BaseActivity {
         buttonDrawerToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!((TextView) findViewById(R.id.menu_Email)).getText().toString().equals(user.getEmail())) {
+                    ((TextView) findViewById(R.id.menu_Nickname)).setText(user.getUsername());
+                    ((TextView) findViewById(R.id.menu_Email)).setText(user.getEmail());
+                    ((ImageView) findViewById(R.id.avatarInMainActivity)).setImageBitmap(user.getAvatar());
+                }
                 drawerLayout.open();
-                ((TextView) findViewById(R.id.menu_Nickname)).setText(user.getUsername());
-                ((TextView) findViewById(R.id.menu_Email)).setText(user.getEmail());
             }
         });
 
@@ -76,6 +80,8 @@ public class MainActivity extends BaseActivity {
 
                 if (itemId == R.id.itemTermsAndConditions) {
                     //thuc hien hanh dong
+                    Intent intent = new Intent(MainActivity.this, TermsAndConditionsActivity.class);
+                    startActivity(intent);
                 }
 
                 if (itemId == R.id.itemAboutUs) {
@@ -115,7 +121,7 @@ public class MainActivity extends BaseActivity {
                     replaceFragment(new ProductsFragment());
                 }
                 if (menuItem.getItemId() == R.id.item_Me) {
-                    replaceFragment(new MeFragment());
+                    replaceFragment(new MeFragment(user));
                 }
                 return true;
             }

@@ -16,6 +16,7 @@
         android:backgroundTint="@color/orange">
 
         <ImageView
+            android:id="@+id/avatarInMainActivity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/user_icon">

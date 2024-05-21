@@ -2,10 +2,15 @@ package com.example.btl2;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,23 +36,36 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl2.adapters.ProductImageAdapter;
+import com.example.btl2.api.FirebaseAPI;
+import com.example.btl2.fragment.BaseActivity;
 import com.example.btl2.models.Product;
+import com.example.btl2.models.User;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
-public class CreateAuction extends AppCompatActivity {
+public class CreateAuction extends BaseActivity {
     Button addProductPicture;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_PERMISSION = 1;
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final int ID_LENGTH = 20;
+    private static final SecureRandom random = new SecureRandom();
     private final ArrayList<Uri> imageUris = new ArrayList<>();
     private ProductImageAdapter imageAdapter;
     ListView productImages;
     EditText startTimeEditText, endTimeEditText;
     private LocalDateTime startDateTime, endDateTime;
     Button cancelButton, submitButton;
+    Boolean isIDUnique;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +80,10 @@ public class CreateAuction extends AppCompatActivity {
         imageAdapter = new ProductImageAdapter(this, imageUris);
         productImages.setAdapter(imageAdapter);
 
+        isIDUnique = false;
+
         addProductPicture.setOnClickListener(v -> {
+            imageUris.clear();
             ((TextView)findViewById(R.id.imageError)).setVisibility(View.GONE);
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -90,12 +111,57 @@ public class CreateAuction extends AppCompatActivity {
 
         submitButton.setOnClickListener(v -> {
             if(checkValid()) {
-                Product product = new Product();
-                // TODO: Tạo product từ những thông tin
-                // TODO: Tạo một id ngẫu nhiên, kiểm tra xem đã có trên Firebase chưa
-                // TODO: Nếu chưa tồn tại ID, đẩy lên Firebase
+                // Tạo một id ngẫu nhiên, kiểm tra xem đã có trên Firebase chưa
+                String id = "";
+                if (!isIDUnique) {
+                    id = generateRandomID();
+                    checkID(id);
+                }
+                String name = ((EditText)findViewById(R.id.productNameEditText)).getText().toString();
+                String owner = user.getId();
+                String description = ((EditText)findViewById(R.id.productDescriptionEditText)).getText().toString();
+                String startTime = startTimeEditText.getText().toString();
+                String endTime = endTimeEditText.getText().toString();
+                int startPrice = Integer.parseInt(((EditText)findViewById(R.id.startPriceEditText)).getText().toString());
+                int currentPrice = 0;
+                int stepPrice = Integer.parseInt(((EditText)findViewById(R.id.stepPriceEditText)).getText().toString());
+
+                ArrayList<Bitmap> image = new ArrayList<>();
+                for (Uri uri : imageUris) {
+                    image.add(getBitmapFromUri(uri));
+                }
+
+                // Tạo product từ những thông tin
+                Product product = new Product(id, name, owner, description,
+                        image,
+                        startTime, endTime,
+                        startPrice, currentPrice, stepPrice);
+
+                // Đẩy lên Firebase
+                FirebaseAPI.addProduct(product);
+                finish();
             }
         });
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) {
+        InputStream inputStream = null;
+        try {
+            inputStream = getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return BitmapFactory.decodeStream(inputStream);
+    }
+
+
+    private String generateRandomID() {
+        StringBuilder sb = new StringBuilder(ID_LENGTH);
+        for (int i = 0; i < ID_LENGTH; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(index));
+        }
+        return sb.toString();
     }
 
     private boolean checkValid() {
@@ -253,5 +319,66 @@ public class CreateAuction extends AppCompatActivity {
             }
             imageAdapter.notifyDataSetChanged();
         }
+    }
+
+    private class GetRandomID extends AsyncTask<String, Void, Boolean> {
+        protected ProgressDialog dialog;
+        protected Context context;
+
+        public GetRandomID(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.dialog = new ProgressDialog(context, 1);
+            this.dialog.setMessage("Đang tạo sản phẩm");
+            this.dialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                Task<Boolean> task = FirebaseAPI.checkDuplicateID((String) params[0]);
+                isIDUnique = Tasks.await(task);
+                return isIDUnique;
+            } catch (Exception e) {
+                Log.v("ASYNC", "ERROR : " + e);
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            // Đăng ký OnFieldSelectedListener cho adapter
+            isIDUnique = result;
+            if (dialog.isShowing())
+                dialog.dismiss();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void checkID(String id) {
+        GetRandomID taskGetUser = new GetRandomID(this);
+        taskGetUser.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, id);
+        new AsyncTask<String, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(String... strings) {
+                try {
+                    return taskGetUser.get();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                isIDUnique = result;
+            }
+        }.execute();
     }
 }
