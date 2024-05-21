@@ -8,40 +8,32 @@
     tools:context=".TermsAndConditionsActivity"
     android:orientation="vertical">
 
-    <Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#31A5FF"
-        android:layout_weight="0">
-
-        <ImageButton
-            android:id="@+id/buttonDrawerToggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/negavation_icon"
-            android:background="#31A4FE"/>
-
-    </Toolbar>
-
-
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="20dp">
 
         <TextView
+            android:id="@+id/mainContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="((Terms And Conditions))"
-            android:textSize="30sp"
-            android:gravity="center"/>
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:autoLink="none"
+            android:gravity="center_vertical"/>
     </ScrollView>
 
     <Button
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back to Home"
+        android:textSize="20sp"
         android:layout_gravity="center"/>
 
 

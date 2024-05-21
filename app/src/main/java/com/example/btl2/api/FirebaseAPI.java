@@ -168,6 +168,23 @@ public class FirebaseAPI {
         return taskCompletionSource.getTask();
     }
 
+    public static Task<String> getTermsAndConditions() {
+        TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String ans = snapshot.child("Terms and conditions").getValue(String.class);
+                taskCompletionSource.setResult(ans);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                taskCompletionSource.setResult(null);
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
     public static void addProduct(Product product) {
         DatabaseReference newProduct = ref.child("Products").child(product.getId());
 

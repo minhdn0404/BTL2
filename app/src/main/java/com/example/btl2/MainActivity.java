@@ -55,12 +55,19 @@ public class MainActivity extends BaseActivity {
         buttonDrawerToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                drawerLayout.open();
+            }
+        });
+
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
                 if (!((TextView) findViewById(R.id.menu_Email)).getText().toString().equals(user.getEmail())) {
                     ((TextView) findViewById(R.id.menu_Nickname)).setText(user.getUsername());
                     ((TextView) findViewById(R.id.menu_Email)).setText(user.getEmail());
                     ((ImageView) findViewById(R.id.avatarInMainActivity)).setImageBitmap(user.getAvatar());
                 }
-                drawerLayout.open();
+                super.onDrawerSlide(drawerView, slideOffset);
             }
         });
 
