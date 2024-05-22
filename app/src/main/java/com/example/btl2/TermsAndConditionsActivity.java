@@ -51,6 +51,7 @@ public class TermsAndConditionsActivity extends AppCompatActivity {
             super.onPreExecute();
             this.dialog = new ProgressDialog(context, 1);
             this.dialog.setMessage("Đang lấy các điều khoản và điều kiện");
+            this.dialog.setCancelable(false);
             this.dialog.show();
         }
 

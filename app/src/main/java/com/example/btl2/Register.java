@@ -110,6 +110,7 @@ public class Register extends BaseActivity {
             super.onPreExecute();
             this.dialog = new ProgressDialog(context, 1);
             this.dialog.setMessage("Đang đăng ký");
+            this.dialog.setCancelable(false);
             this.dialog.show();
         }
 

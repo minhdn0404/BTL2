@@ -57,10 +57,15 @@ public class MainActivity extends BaseActivity {
     List<Product> productList = new ArrayList<>();
 
     @Override
+    protected void onStart() {
+        getAllProducts();
+        super.onStart();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getAllProducts();
 
         drawerLayout = findViewById(R.id.drawerLayout);
         buttonDrawerToggle = findViewById(R.id.buttonDrawerToggle);
@@ -141,7 +146,7 @@ public class MainActivity extends BaseActivity {
                     replaceFragment(new NotiFragment());
                 }
                 if (menuItem.getItemId() == R.id.item_Products) {
-                    replaceFragment(new ProductsFragment());
+                    replaceFragment(new ProductsFragment(productList, user));
                 }
                 if (menuItem.getItemId() == R.id.item_Me) {
                     replaceFragment(new MeFragment(user));
@@ -171,6 +176,7 @@ public class MainActivity extends BaseActivity {
             super.onPreExecute();
             this.dialog = new ProgressDialog(context, 1);
             this.dialog.setMessage("Đang lấy dữ liệu");
+            this.dialog.setCancelable(false);
             this.dialog.show();
         }
 
