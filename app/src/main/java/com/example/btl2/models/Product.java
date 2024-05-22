@@ -47,6 +47,9 @@ public class Product {
     public ArrayList<Bitmap> getImage() {
         return image;
     }
+    public void setImage(List<Bitmap> image) {
+        this.image = (ArrayList<Bitmap>) image;
+    }
 
     public String getDescription() {
         return description;
@@ -102,5 +105,21 @@ public class Product {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", owner='" + owner + '\'' +
+                ", description='" + description + '\'' +
+                ", image=" + image +
+                ", auctionStartTime='" + auctionStartTime + '\'' +
+                ", auctionEndTime='" + auctionEndTime + '\'' +
+                ", startPrice=" + startPrice +
+                ", currentPrice=" + currentPrice +
+                ", stepPrice=" + stepPrice +
+                '}';
     }
 }

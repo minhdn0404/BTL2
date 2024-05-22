@@ -1,6 +1,7 @@
 package com.example.btl2;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,33 +11,46 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.btl2.models.HomeModel;
+import com.example.btl2.models.Product;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeModelAdapter extends RecyclerView.Adapter<HomeModelAdapter.ViewHolder> {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> {
 
     Context context;
-    List<HomeModel> list;
+    List<Product> list;
 
-    public HomeModelAdapter(Context context, List<HomeModel> list) {
+    public ProductListAdapter(Context context, List<Product> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public HomeModelAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_vertical_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeModelAdapter.ViewHolder holder, int position) {
-        holder.imageView.setImageResource(list.get(position).getImage());
+    public void onBindViewHolder(@NonNull ProductListAdapter.ViewHolder holder, int position) {
+        holder.imageView.setImageBitmap(list.get(position).getImage().get(0));
         holder.name.setText(list.get(position).getName());
         holder.startPrice.setText(String.valueOf(list.get(position).getStartPrice()));
         holder.stepPrice.setText(String.valueOf(list.get(position).getStepPrice()));
-        holder.time.setText(list.get(position).getTime());
+        String startTime = list.get(position).getAuctionStartTime();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd-MM-yyyy");
+            LocalDateTime dateTime = LocalDateTime.parse(startTime, formatter);
+            if (dateTime.isBefore(LocalDateTime.now())) {
+                holder.time.setText("Đang diễn ra");
+            } else {
+                holder.time.setText(list.get(position).getAuctionStartTime());
+            }
+        }
     }
 
     @Override
@@ -44,7 +58,7 @@ public class HomeModelAdapter extends RecyclerView.Adapter<HomeModelAdapter.View
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
         TextView name, time, startPrice, stepPrice;
