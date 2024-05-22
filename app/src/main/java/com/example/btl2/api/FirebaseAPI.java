@@ -3,9 +3,7 @@ package com.example.btl2.api;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
-import android.widget.ImageView;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,7 +26,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FirebaseAPI {
     public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
@@ -48,11 +49,16 @@ public class FirebaseAPI {
                 userData.child("password").setValue(password);
                 userData.child("email").setValue(email);
                 userData.child("phone").setValue(phone);
-                userData.child("avatar").setValue("gs://auctionapp-1f81e.appspot.com/images/default_avatar.jpg");
+                userData.child("avatar").setValue("images/avatars/default_avatar.png");
                 userData.child("isAdmin").setValue(false);
 
-                User newUser = new User(username, phone, email, password, false);
-                taskCompletionSource.setResult(newUser);
+                long MAX_BYTES = 1024 * 1024;
+                fStorage.getReference().child("images/avatars/default_avatar.png")
+                        .getBytes(MAX_BYTES).addOnSuccessListener(bytes -> {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            User newUser = new User(username, phone, email, password, bitmap, false);
+                            taskCompletionSource.setResult(newUser);
+                        }).addOnFailureListener(e -> taskCompletionSource.setResult(null));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -76,8 +82,20 @@ public class FirebaseAPI {
                 userAPI.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        User user = snapshot.getValue(User.class);
-                        taskCompletionSource.setResult(user);
+                        User user = new User();
+                        user.setEmail(snapshot.child("email").getValue(String.class));
+                        user.setUsername(snapshot.child("username").getValue(String.class));
+                        user.setPhone(snapshot.child("phone").getValue(String.class));
+                        user.setAdmin(Boolean.TRUE.equals(snapshot.child("isAdmin").getValue(Boolean.class)));
+                        user.setId(snapshot.getKey());
+
+                        long MAX_BYTES = 1024 * 1024;
+                        fStorage.getReference().child("images/avatars/default_avatar.png")
+                                .getBytes(MAX_BYTES).addOnSuccessListener(bytes -> {
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    user.setAvatar(bitmap);
+                                    taskCompletionSource.setResult(user);
+                                }).addOnFailureListener(e -> taskCompletionSource.setResult(null));
                     }
 
                     @Override
@@ -96,21 +114,63 @@ public class FirebaseAPI {
         return taskCompletionSource.getTask();
     }
 
-    public static Task<ArrayList<Product>> getProductsByOwner(String uid) {
-        TaskCompletionSource<ArrayList<Product>> taskCompletionSource = new TaskCompletionSource<>();
+    public static Task<Boolean> checkDuplicateID(String id) {
+        TaskCompletionSource<Boolean> taskCompletionSource = new TaskCompletionSource<>();
         DatabaseReference products = ref.child("Products");
 
         products.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Product> ans = new ArrayList<>();
+                boolean check = false;
                 for (DataSnapshot productSnapshot : snapshot.getChildren()) {
-                    if (productSnapshot.child("owner").getValue(String.class) == uid) {
-                        Product product = productSnapshot.getValue(Product.class);
-                        product.setId(productSnapshot.getKey());
-                        ans.add(product);
+                    if (productSnapshot.getKey() == id) {
+                        check = true;
                     }
                 }
+                taskCompletionSource.setResult(check);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                taskCompletionSource.setResult(null);
+            }
+        });
+
+        return taskCompletionSource.getTask();
+    }
+
+//    public static Task<ArrayList<Product>> getProductsByOwner(String uid) {
+//        TaskCompletionSource<ArrayList<Product>> taskCompletionSource = new TaskCompletionSource<>();
+//        DatabaseReference products = ref.child("Products");
+//
+//        products.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                ArrayList<Product> ans = new ArrayList<>();
+//                for (DataSnapshot productSnapshot : snapshot.getChildren()) {
+//                    if (productSnapshot.child("owner").getValue(String.class) == uid) {
+//                        Product product = productSnapshot.getValue(Product.class);
+//                        product.setId(productSnapshot.getKey());
+//                        ans.add(product);
+//                    }
+//                }
+//                taskCompletionSource.setResult(ans);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                taskCompletionSource.setResult(null);
+//            }
+//        });
+//        return taskCompletionSource.getTask();
+//    }
+
+    public static Task<String> getTermsAndConditions() {
+        TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String ans = snapshot.child("Terms and conditions").getValue(String.class);
                 taskCompletionSource.setResult(ans);
             }
 
@@ -129,46 +189,75 @@ public class FirebaseAPI {
         newProduct.child("auctionTime").setValue(product.getAuctionTime());
         newProduct.child("currentPrice").setValue(product.getCurrentPrice());
         newProduct.child("description").setValue(product.getDescription());
-        newProduct.child("image").setValue(product.getImage());
         newProduct.child("name").setValue(product.getName());
         newProduct.child("owner").setValue(product.getOwner());
         newProduct.child("startPrice").setValue(product.getStartPrice());
         newProduct.child("stepPrice").setValue(product.getStepPrice());
+
+        putImageOnStorage(product);
     }
 
-    public static Task<Boolean> putImageOnStorage(String uri) {
-        TaskCompletionSource<Boolean> taskCompletionSource = new TaskCompletionSource<>();
-        fStorage.getReference().child("images").putFile(Uri.parse(uri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    public static Task<List<Product>> getAllProducts() {
+        TaskCompletionSource<List<Product>> taskCompletionSource = new TaskCompletionSource<>();
+        DatabaseReference products = ref.child("Products");
+        products.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                taskCompletionSource.setResult(true);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Product> ans = new ArrayList<>();
+                for (DataSnapshot productSnapshot : snapshot.getChildren()) {
+                    Product product = productSnapshot.getValue(Product.class);
+                    product.setId(productSnapshot.getKey());
+                    ans.add(product);
+                }
+                taskCompletionSource.setResult(ans);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                taskCompletionSource.setResult(false);
-            }
-        });
 
-        return taskCompletionSource.getTask();
-    }
-
-    public static Task<Bitmap> getImageFromStorage(String uri) {
-        TaskCompletionSource<Bitmap> taskCompletionSource = new TaskCompletionSource<>();
-        long MAX_BYTES = 1024 * 1024;
-        fStorage.getReferenceFromUrl(uri).getBytes(MAX_BYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                taskCompletionSource.setResult(bitmap);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 taskCompletionSource.setResult(null);
             }
         });
-
         return taskCompletionSource.getTask();
+    }
+
+    public static Task<Product> getImageOfProduct(Product product) {
+        TaskCompletionSource<Product> taskCompletionSource = new TaskCompletionSource<>();
+
+        long MAX_BYTES = 1024 * 1024 * 100;
+        fStorage.getReference().child("images/").child(product.getId()).listAll()
+                                            .addOnSuccessListener(listResult -> {
+
+            List<Bitmap> bitmaps = new ArrayList<>();
+
+            for (int j = 0; j < listResult.getItems().size(); j++) {  // Với mỗi hình ảnh
+                int finalJ = j;
+                StorageReference prefix = listResult.getItems().get(j);
+                // lấy ảnh về
+                Log.d("FirebaseAPI.java", "Start download image\nBitmap number " + finalJ + ": " + bitmaps.size() + "\nPrefix: " + prefix.toString());
+                prefix.getBytes(MAX_BYTES).addOnSuccessListener(bytes -> {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    bitmaps.add(bitmap);
+                    Log.d("FirebaseAPI.java", "Finish download image\nBitmap number " + finalJ + ": " + bitmaps.size());
+                    if (finalJ == listResult.getItems().size() - 1) {
+                        product.setImage(bitmaps);
+                        taskCompletionSource.setResult(product);
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.e("FirebaseAPI.java", e.toString());
+                });
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
+    public static void putImageOnStorage(Product product) {
+        for (int i = 0; i < product.getImage().size(); i++) {
+            Bitmap bitmap = product.getImage().get(i);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask uploadTask = fStorage.getReference().child("images").child(product.getId())
+                    .child("image" + i + ".jpg").putBytes(data);
+        }
     }
 }

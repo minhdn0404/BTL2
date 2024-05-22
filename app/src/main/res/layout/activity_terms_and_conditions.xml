@@ -13,153 +13,28 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-
-        <LinearLayout
+        android:layout_weight="1"
+        android:padding="20dp">
+        <TextView
+            android:id="@+id/mainContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Điều khoản và dịch vụ"
-                android:textColor="@android:color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="1. Chấp nhận Điều khoản: Sử dụng ứng dụng đồng nghĩa với việc bạn chấp nhận các điều khoản sử dụng."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="2. Đăng ký và Tài khoản: Phải đăng ký tài khoản để tham gia đấu giá. Cung cấp thông tin chính xác và bảo mật thông tin đăng nhập."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="3. Quy trình Đấu giá: Đấu giá trực tuyến với thời gian cụ thể. Giá thầu không thể rút lại sau khi đặt."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="4. Thanh toán và Phí: Người thắng cuộc phải thanh toán trong thời gian quy định. Các khoản phí dịch vụ có thể áp dụng."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="5. Vận chuyển và Giao nhận: Hàng hóa sẽ được vận chuyển sau khi thanh toán. Người nhận chịu trách nhiệm kiểm tra hàng hóa khi nhận được."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="6. Chính sách Hoàn trả và Hủy bỏ: Chính sách này khác nhau tùy theo nhà cung cấp và mặt hàng. Chúng tôi không chịu trách nhiệm về chất lượng hàng hóa."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="7. Quyền Riêng tư: Thông tin cá nhân được thu thập và sử dụng theo Chính sách Bảo mật."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="8. Hạn chế Trách nhiệm: Chúng tôi không chịu trách nhiệm về các thiệt hại phát sinh từ việc sử dụng ứng dụng hoặc tranh chấp giữa người mua và người bán."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="9. Thay đổi Điều khoản: Chúng tôi có quyền thay đổi điều khoản sử dụng. Tiếp tục sử dụng ứng dụng sau khi thay đổi có hiệu lực đồng nghĩa với việc chấp nhận thay đổi."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="10. Chấm dứt: Chúng tôi có thể chấm dứt quyền truy cập nếu vi phạm điều khoản."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="11. Luật Áp dụng: Điều khoản được điều chỉnh bởi luật pháp của quốc gia nơi công ty đăng ký kinh doanh."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="12. Liên hệ: Liên hệ qua email hoặc số điện thoại được cung cấp trên ứng dụng nếu có thắc mắc."
-                android:textAlignment="textStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:text="((Terms And Conditions))"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:autoLink="none"
+            android:gravity="center_vertical"/>
     </ScrollView>
 
     <Button
-        android:id="@+id/btBack"
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Back to Home" />
+        android:text="Back to Home"
+        android:textSize="20sp"
+        android:layout_gravity="center"/>
 
 
 </LinearLayout>

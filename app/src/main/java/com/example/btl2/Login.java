@@ -89,6 +89,7 @@ public class Login extends BaseActivity {
             super.onPreExecute();
             this.dialog = new ProgressDialog(context, 1);
             this.dialog.setMessage("Đang đăng nhập");
+            this.dialog.setCancelable(false);
             this.dialog.show();
         }
 
