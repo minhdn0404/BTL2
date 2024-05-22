@@ -139,14 +139,13 @@ public class FirebaseAPI {
         return taskCompletionSource.getTask();
     }
 
-//    public static Task<ArrayList<Product>> getProductsByOwner(String uid) {
-//        TaskCompletionSource<ArrayList<Product>> taskCompletionSource = new TaskCompletionSource<>();
-//        DatabaseReference products = ref.child("Products");
+//    public static Task<User> findUserByID(String uid) {
+//        TaskCompletionSource<User> taskCompletionSource = new TaskCompletionSource<>();
+//        DatabaseReference products = ref.child("Users");
 //
 //        products.addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                ArrayList<Product> ans = new ArrayList<>();
 //                for (DataSnapshot productSnapshot : snapshot.getChildren()) {
 //                    if (productSnapshot.child("owner").getValue(String.class) == uid) {
 //                        Product product = productSnapshot.getValue(Product.class);
@@ -186,7 +185,7 @@ public class FirebaseAPI {
         DatabaseReference newProduct = ref.child("Products").child(product.getId());
 
         newProduct.child("auctionStartTime").setValue(product.getAuctionStartTime());
-        newProduct.child("auctionTime").setValue(product.getAuctionTime());
+        newProduct.child("auctionEndTime").setValue(product.getAuctionEndTime());
         newProduct.child("currentPrice").setValue(product.getCurrentPrice());
         newProduct.child("description").setValue(product.getDescription());
         newProduct.child("name").setValue(product.getName());
@@ -209,6 +208,7 @@ public class FirebaseAPI {
                     product.setId(productSnapshot.getKey());
                     ans.add(product);
                 }
+                Log.v("FirebaseAPI.java", "Number of products found: " + ans.size());
                 taskCompletionSource.setResult(ans);
             }
 
@@ -259,5 +259,23 @@ public class FirebaseAPI {
             UploadTask uploadTask = fStorage.getReference().child("images").child(product.getId())
                     .child("image" + i + ".jpg").putBytes(data);
         }
+    }
+
+    public static Task<Integer> getCurrentPrice(Product product) {
+        DatabaseReference price = ref.child("Products").child(product.getId()).child("currentPrice");
+        TaskCompletionSource<Integer> taskCompletionSource = new TaskCompletionSource<>();
+        price.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int ans = snapshot.getValue(Integer.class);
+                taskCompletionSource.setResult(ans);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                taskCompletionSource.setResult(null);
+            }
+        });
+        return taskCompletionSource.getTask();
     }
 }

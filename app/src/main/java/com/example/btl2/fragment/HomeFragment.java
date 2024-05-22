@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 
 import com.example.btl2.CreateAuction;
+import com.example.btl2.Details_Auction;
 import com.example.btl2.MainActivity;
 import com.example.btl2.models.HomeModel;
 import com.example.btl2.ProductListAdapter;
@@ -25,7 +27,7 @@ import com.example.btl2.models.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
 
     RecyclerView homeRecycler;
     List<Product> productList;
@@ -46,6 +48,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         productListAdapter = new ProductListAdapter(getActivity(), productList);
+        productListAdapter.setOnItemClickListener(product -> {
+            Log.e("HomeFragment.java", "productListAdapter.setOnItemClickListener");
+            Intent intent = new Intent(view.getContext(), Details_Auction.class);
+            intent.putExtra("product", product.getId());
+            startActivity(intent);
+        });
         homeRecycler.setAdapter(productListAdapter);
         homeRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         homeRecycler.setHasFixedSize(true);

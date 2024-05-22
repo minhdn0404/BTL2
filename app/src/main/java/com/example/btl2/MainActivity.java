@@ -54,7 +54,6 @@ public class MainActivity extends BaseActivity {
     ImageButton buttonDrawerToggle;
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
-    List<Product> productList = new ArrayList<>();
 
     @Override
     protected void onStart() {
