@@ -82,12 +82,12 @@
                 android:id="@+id/editTextText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
                 android:hint="Điền giá..."
-                android:layout_marginLeft="10dp"
-                android:paddingLeft="7dp"/>
+                android:inputType="text"
+                android:paddingLeft="7dp" />
         </LinearLayout>
 
         <TextView
@@ -106,6 +106,7 @@
             android:text="Tên người bán: " />
 
         <Button
+            android:id="@+id/backButton"
             android:layout_width="140dp"
             android:layout_height="60dp"
             android:text="Back"

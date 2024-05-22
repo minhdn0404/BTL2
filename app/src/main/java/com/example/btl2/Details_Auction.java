@@ -14,6 +14,7 @@ import com.example.btl2.api.FirebaseAPI;
 import com.example.btl2.databinding.ActivityDetailsAuctionBinding;
 import com.example.btl2.fragment.BaseActivity;
 import com.example.btl2.models.Product;
+import com.example.btl2.models.User;
 import com.google.android.gms.tasks.Tasks;
 
 import java.time.Duration;
@@ -27,6 +28,7 @@ public class Details_Auction extends BaseActivity {
     private Product product;
     private ActivityDetailsAuctionBinding binding;
     private DetailImageAdapter imageAdapter;
+    private User owner;
 
     DateTimeFormatter formatter;
     DateTimeFormatter formatter1;
@@ -38,11 +40,11 @@ public class Details_Auction extends BaseActivity {
 
         String productID = getIntent().getStringExtra("product");
 
-        Log.d("Details_Auction.java", productID);
-
         if (productID != "") {
             this.product = findProductByID(productID);
+            findUser();
             Log.d("Details_Auction.java", this.product.toString());
+
             binding.productNameTextView.setText(product.getName());
             binding.productDescriptionTextView.setText("Mô tả sản phẩm: " + product.getDescription());
             binding.stepPriceTextView.setText("Bước giá nhỏ nhất: " + product.getStepPrice());
@@ -67,6 +69,36 @@ public class Details_Auction extends BaseActivity {
         }
         imageAdapter = new DetailImageAdapter(this, product.getImage());
         binding.productDetailImages.setAdapter(imageAdapter);
+
+        binding.bidButton.setOnClickListener(v -> {
+            if (Integer.parseInt(binding.editTextText.getText().toString()) < product.getCurrentPrice() + product.getStepPrice()) {
+                binding.editTextText.setError("Mức đặt không hợp lệ");
+            } else {
+                FirebaseAPI.changeCurrentPrice(product.getId(), Integer.parseInt(binding.editTextText.getText().toString()));
+            }
+        });
+
+        binding.backButton.setOnClickListener(v -> {
+            finish();
+        });
+    }
+
+    private void findUser() {
+        new AsyncTask<String, Void, User>() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            protected User doInBackground(String... products) {
+                try {
+                    owner = Tasks.await(FirebaseAPI.findUserByID(product.getOwner()));
+                    binding.sellerInfoTextView.setText("Tên người bán: " + owner.getUsername());
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                return user;
+            }
+        }.execute();
     }
 
     private void updateCurrentPrice() {
