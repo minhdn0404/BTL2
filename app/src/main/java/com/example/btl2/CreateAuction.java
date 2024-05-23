@@ -138,10 +138,26 @@ public class CreateAuction extends BaseActivity {
                         startPrice, currentPrice, stepPrice);
 
                 // Đẩy lên Firebase
+                sendToFirebase(product);
                 FirebaseAPI.addProduct(product);
                 finish();
             }
         });
+    }
+
+    private void sendToFirebase(Product product) {
+        new AsyncTask<Product, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Product... products) {
+                try {
+                    Tasks.await(FirebaseAPI.addProduct(product));
+                } catch (ExecutionException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                return null;
+            }
+        }.execute();
     }
 
     private Bitmap getBitmapFromUri(Uri uri) {

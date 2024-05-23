@@ -198,8 +198,9 @@ public class FirebaseAPI {
         return taskCompletionSource.getTask();
     }
 
-    public static void addProduct(Product product) {
+    public static Task<Void> addProduct(Product product) {
         DatabaseReference newProduct = ref.child("Products").child(product.getId());
+        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
 
         newProduct.child("auctionStartTime").setValue(product.getAuctionStartTime());
         newProduct.child("auctionEndTime").setValue(product.getAuctionEndTime());
@@ -210,7 +211,9 @@ public class FirebaseAPI {
         newProduct.child("startPrice").setValue(product.getStartPrice());
         newProduct.child("stepPrice").setValue(product.getStepPrice());
 
-        putImageOnStorage(product);
+        taskCompletionSource = putImageOnStorage(product, taskCompletionSource);
+
+        return taskCompletionSource.getTask();
     }
 
     public static Task<List<Product>> getAllProducts() {
@@ -267,7 +270,7 @@ public class FirebaseAPI {
         return taskCompletionSource.getTask();
     }
 
-    public static void putImageOnStorage(Product product) {
+    public static TaskCompletionSource<Void> putImageOnStorage(Product product, TaskCompletionSource<Void> task) {
         for (int i = 0; i < product.getImage().size(); i++) {
             Bitmap bitmap = product.getImage().get(i);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -275,7 +278,9 @@ public class FirebaseAPI {
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = fStorage.getReference().child("images").child(product.getId())
                     .child("image" + i + ".jpg").putBytes(data);
+            task.setResult(null);
         }
+        return task;
     }
 
     public static Task<Integer> getCurrentPrice(Product product) {
