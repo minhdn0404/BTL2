@@ -26,6 +26,7 @@
             android:textSize="27sp"
             android:textStyle="bold"
             android:paddingTop="8dp"
+            android:textColor="@color/black"
             android:text="Tên sản phẩm" />
 
         <TextView
@@ -95,6 +96,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:text="Thông tin người bán"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -103,6 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:textColor="@color/black"
             android:text="Tên người bán: " />
 
         <Button

@@ -139,8 +139,6 @@ public class CreateAuction extends BaseActivity {
 
                 // Đẩy lên Firebase
                 sendToFirebase(product);
-                FirebaseAPI.addProduct(product);
-                finish();
             }
         });
     }
@@ -152,6 +150,7 @@ public class CreateAuction extends BaseActivity {
             protected Void doInBackground(Product... products) {
                 try {
                     Tasks.await(FirebaseAPI.addProduct(product));
+                    finish();
                 } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }

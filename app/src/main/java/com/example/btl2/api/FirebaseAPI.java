@@ -197,7 +197,15 @@ public class FirebaseAPI {
         newProduct.child("startPrice").setValue(product.getStartPrice());
         newProduct.child("stepPrice").setValue(product.getStepPrice());
 
-        taskCompletionSource = putImageOnStorage(product, taskCompletionSource);
+        for (int i = 0; i < product.getImage().size(); i++) {
+            Bitmap bitmap = product.getImage().get(i);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask uploadTask = fStorage.getReference().child("images").child(product.getId())
+                    .child("image" + i + ".jpg").putBytes(data);
+            taskCompletionSource.setResult(null);
+        }
 
         return taskCompletionSource.getTask();
     }
@@ -256,18 +264,18 @@ public class FirebaseAPI {
         return taskCompletionSource.getTask();
     }
 
-    public static TaskCompletionSource<Void> putImageOnStorage(Product product, TaskCompletionSource<Void> task) {
-        for (int i = 0; i < product.getImage().size(); i++) {
-            Bitmap bitmap = product.getImage().get(i);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = fStorage.getReference().child("images").child(product.getId())
-                    .child("image" + i + ".jpg").putBytes(data);
-            task.setResult(null);
-        }
-        return task;
-    }
+//    public static TaskCompletionSource<Void> putImageOnStorage(Product product, TaskCompletionSource<Void> task) {
+//        for (int i = 0; i < product.getImage().size(); i++) {
+//            Bitmap bitmap = product.getImage().get(i);
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            byte[] data = baos.toByteArray();
+//            UploadTask uploadTask = fStorage.getReference().child("images").child(product.getId())
+//                    .child("image" + i + ".jpg").putBytes(data);
+//            task.setResult(null);
+//        }
+//        return task;
+//    }
 
     public static Task<Integer> getCurrentPrice(Product product) {
         DatabaseReference price = ref.child("Products").child(product.getId()).child("currentPrice");

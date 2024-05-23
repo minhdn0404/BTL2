@@ -128,11 +128,13 @@ public class Details_Auction extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (startTime.isBefore(LocalDateTime.now())) {
                 binding.editTextText.setClickable(true);
+                binding.editTextText.setFocusable(true);
                 binding.editTextText.setHint("Điền giá...");
                 String duration = getDuration(LocalDateTime.now(), endTime);
                 binding.timeRemainingTextView.setText("Thời gian đến khi kết thúc: " + duration);
             } else {
-                binding.editTextText.setClickable(true);
+                binding.editTextText.setClickable(false);
+                binding.editTextText.setFocusable(false);
                 binding.editTextText.setHint("Chưa đến giờ đấu giá");
                 String duration = getDuration(LocalDateTime.now(), startTime);
                 binding.timeRemainingTextView.setText("Thời gian đến khi bắt đầu: " + duration);
