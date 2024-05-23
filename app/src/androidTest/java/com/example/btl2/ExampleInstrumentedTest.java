@@ -38,4 +38,36 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.btl2", appContext.getPackageName());
     }
+
+    public void testSuccessfulLogin() {
+        // Nhập email
+        Espresso.onView(ViewMatchers.withId(R.id.editText_Email)).perform(ViewActions.typeText("accept email ne"), ViewActions.closeSoftKeyboard());
+
+        // Nhập mật khẩu
+        Espresso.onView(ViewMatchers.withId(R.id.editText_Password)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        // Nhấn nút đăng nhập
+        Espresso.onView(ViewMatchers.withId(R.id.button_login)).perform(ViewActions.click());
+
+        // Kiểm tra chuyển đổi màn hình (MainActivity)
+        Espresso.onView(ViewMatchers.withId(R.layout.activity_main))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
+
+    @Test
+    public void testFailedLogin() {
+        // Nhập email
+        Espresso.onView(ViewMatchers.withId(R.id.editText_Email)).perform(ViewActions.typeText("accept email ne"), ViewActions.closeSoftKeyboard());
+
+        // Nhập mật khẩu
+        Espresso.onView(ViewMatchers.withId(R.id.editText_Password)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        // Nhấn nút đăng nhập
+        Espresso.onView(ViewMatchers.withId(R.id.button_login)).perform(ViewActions.click());
+
+        // Kiểm tra Toast thông báo thất bại
+        Espresso.onView(ViewMatchers.withText("Login Failed"))
+                .inRoot(new ToastMatcher())
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
 }
