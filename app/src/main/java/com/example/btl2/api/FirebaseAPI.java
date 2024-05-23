@@ -98,10 +98,23 @@ public class FirebaseAPI {
                         long MAX_BYTES = 1024 * 1024 * 100;
                         fStorage.getReference().child("images").child(user.getId()).child("avatar.jpg")
                                 .getBytes(MAX_BYTES).addOnSuccessListener(bytes -> {
+
                                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                     user.setAvatar(bitmap);
                                     taskCompletionSource.setResult(user);
-                                }).addOnFailureListener(e -> taskCompletionSource.setResult(null));
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.d("Avatar download", "Failed to download avatar: " + e.getMessage());
+                                    taskCompletionSource.setResult(null);
+                                });
+
+//                        long MAX_BYTES = 1024 * 1024;
+//                        fStorage.getReference().child("images/avatars/default_avatar.png")
+//                                .getBytes(MAX_BYTES).addOnSuccessListener(bytes -> {
+//                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                                    user.setAvatar(bitmap);
+//                                    taskCompletionSource.setResult(user);
+//                                }).addOnFailureListener(e -> taskCompletionSource.setResult(null));
                     }
 
                     @Override
