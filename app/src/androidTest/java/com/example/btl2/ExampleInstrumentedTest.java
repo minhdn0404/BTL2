@@ -38,6 +38,7 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.btl2", appContext.getPackageName());
     }
+    @Test
 
     public void testSuccessfulLogin() {
         // Nhập email
@@ -70,4 +71,66 @@ public class ExampleInstrumentedTest {
                 .inRoot(new ToastMatcher())
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
+
+
+    //Tạo sản phẩm
+    @Test
+
+    public void testSuccessfulCreatProduct() {
+        // Nhập email
+        Espresso.onView(ViewMatchers.withId(R.id.productNameEditText)).perform(ViewActions.typeText("accept email ne"), ViewActions.closeSoftKeyboard());
+
+        // Nhập mật khẩu
+        Espresso.onView(ViewMatchers.withId(R.id.productDescriptionEditText)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.editTextStartTime)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.editTextEndTime)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.startPriceEditText)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.stepPriceEditText)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        // Nhấn nút đăng nhập
+//        Espresso.onView(ViewMatchers.withId(R.id.addProduct)).perform(ViewActions.click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.addProductPicture)).perform(ViewActions.click());
+
+
+        // Kiểm tra chuyển đổi màn hình (MainActivity)
+        Espresso.onView(ViewMatchers.withId(R.layout.activity_create_auction))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+
+    }
+
+
+    @Test
+    public void testFailedCreatProduct() {
+        // Nhập email
+        // Nhập email
+        Espresso.onView(ViewMatchers.withId(R.id.productNameEditText)).perform(ViewActions.typeText("fail ten san pham ne"), ViewActions.closeSoftKeyboard());
+
+        // Nhập mật khẩu
+        Espresso.onView(ViewMatchers.withId(R.id.productDescriptionEditText)).perform(ViewActions.typeText("fail password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.editTextStartTime)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.editTextEndTime)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.startPriceEditText)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.stepPriceEditText)).perform(ViewActions.typeText("accept password"), ViewActions.closeSoftKeyboard());
+
+        // Nhấn nút đăng nhập
+//        Espresso.onView(ViewMatchers.withId(R.id.addProduct)).perform(ViewActions.click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.addProductPicture)).perform(ViewActions.click());
+
+
+        // Kiểm tra Toast thông báo thất bại
+        Espresso.onView(ViewMatchers.withText("Creat Product Failed"))
+                .inRoot(new ToastMatcher())
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
 }
+
