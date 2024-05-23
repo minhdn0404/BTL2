@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +24,19 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     Context context;
     List<Product> list;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Product product);
+    }
 
     public ProductListAdapter(Context context, List<Product> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -51,6 +61,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 holder.time.setText(list.get(position).getAuctionStartTime());
             }
         }
+        holder.bind(list.get(position), listener);
     }
 
     @Override
@@ -70,6 +81,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             time = itemView.findViewById(R.id.time_model);
             startPrice = itemView.findViewById(R.id.startPrice_model);
             stepPrice = itemView.findViewById(R.id.stepPrice_model);
+        }
+
+        public void bind(final Product product, final OnItemClickListener listener) {
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(product);
+                }
+            });
         }
     }
 }
