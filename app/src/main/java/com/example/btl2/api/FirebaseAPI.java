@@ -95,10 +95,13 @@ public class FirebaseAPI {
                         user.setAdmin(Boolean.TRUE.equals(snapshot.child("isAdmin").getValue(Boolean.class)));
                         user.setId(snapshot.getKey());
 
-                        long MAX_BYTES = 1024 * 1024 * 100;
-                        fStorage.getReference().child("images").child(user.getId()).child("avatar.jpg")
-                                .getBytes(MAX_BYTES).addOnSuccessListener(bytes -> {
+                        String avatarPath = snapshot.child("avatar").getValue(String.class);
 
+                        long MAX_BYTES = 1024 * 1024 * 5; // 5 MB
+                        FirebaseStorage.getInstance().getReference().child(avatarPath)
+                                .getBytes(MAX_BYTES)
+                                .addOnSuccessListener(bytes -> {
+                                    // Convert the byte array to a Bitmap
                                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                     user.setAvatar(bitmap);
                                     taskCompletionSource.setResult(user);
@@ -107,16 +110,7 @@ public class FirebaseAPI {
                                     Log.d("Avatar download", "Failed to download avatar: " + e.getMessage());
                                     taskCompletionSource.setResult(null);
                                 });
-
-//                        long MAX_BYTES = 1024 * 1024;
-//                        fStorage.getReference().child("images/avatars/default_avatar.png")
-//                                .getBytes(MAX_BYTES).addOnSuccessListener(bytes -> {
-//                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                                    user.setAvatar(bitmap);
-//                                    taskCompletionSource.setResult(user);
-//                                }).addOnFailureListener(e -> taskCompletionSource.setResult(null));
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
