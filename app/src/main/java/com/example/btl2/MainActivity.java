@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,6 +56,8 @@ public class MainActivity extends BaseActivity {
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
     List<Product> productList = new ArrayList<>();
+
+    List<Product> searchProductList = new ArrayList<>();
 
     @Override
     protected void onStart() {
@@ -151,6 +154,13 @@ public class MainActivity extends BaseActivity {
                 if (menuItem.getItemId() == R.id.item_Me) {
                     replaceFragment(new MeFragment(user));
                 }
+//                if(menuItem.getItemId()== R.id.searchProduct){
+////                    replaceFragment(new HomeFragment(searchProductList));
+//                    EditText editTextSearchProduct;
+//                    editTextSearchProduct = findViewById(R.id.search_Bar);
+//                    String searchProductText = editTextSearchProduct.getText().toString().trim();
+//                    replaceFragment(new HomeFragment(searchProductText));
+//                }
                 return true;
             }
         });

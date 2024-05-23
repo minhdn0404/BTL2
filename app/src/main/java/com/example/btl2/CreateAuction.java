@@ -76,7 +76,6 @@ public class CreateAuction extends BaseActivity {
         submitButton = findViewById(R.id.submitButton);
         startTimeEditText = findViewById(R.id.editTextStartTime);
         endTimeEditText = findViewById(R.id.editTextEndTime);
-
         imageAdapter = new ProductImageAdapter(this, imageUris);
         productImages.setAdapter(imageAdapter);
 

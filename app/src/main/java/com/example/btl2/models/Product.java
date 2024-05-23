@@ -67,11 +67,11 @@ public class Product {
         this.auctionStartTime = auctionStartTime;
     }
 
-    public String getAuctionTime() {
+    public String getAuctionEndTime() {
         return auctionEndTime;
     }
 
-    public void setAuctionTime(String auctionEndTime) {
+    public void setAuctionEndTime(String auctionEndTime) {
         this.auctionEndTime = auctionEndTime;
     }
 

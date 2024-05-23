@@ -186,7 +186,7 @@ public class FirebaseAPI {
         DatabaseReference newProduct = ref.child("Products").child(product.getId());
 
         newProduct.child("auctionStartTime").setValue(product.getAuctionStartTime());
-        newProduct.child("auctionTime").setValue(product.getAuctionTime());
+        newProduct.child("auctionEndTime").setValue(product.getAuctionEndTime());
         newProduct.child("currentPrice").setValue(product.getCurrentPrice());
         newProduct.child("description").setValue(product.getDescription());
         newProduct.child("name").setValue(product.getName());
