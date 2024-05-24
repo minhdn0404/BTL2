@@ -19,7 +19,7 @@
             android:translationZ="10dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageView"
+                android:id="@+id/meAvartarImg"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:padding="3dp"
@@ -35,7 +35,7 @@
                 app:srcCompat="@drawable/profile"/>
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/meAvatarBtn"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="#11EDDC"
@@ -99,8 +99,8 @@
                 android:textSize="21dp"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/textView11"
+            <EditText
+                android:id="@+id/editTextMe_Username"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:gravity="center_vertical"
@@ -129,7 +129,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/textViewMe_Email"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:gravity="center_vertical"
@@ -157,8 +157,8 @@
                 android:textSize="21dp"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/textView4"
+            <EditText
+                android:id="@+id/editTextMe_Phone"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:gravity="center_vertical"
@@ -199,10 +199,10 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/meSaveBtn"
             android:layout_width="140dp"
             android:layout_height="40dp"
-            android:text="Change infor"
+            android:text="Save change"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="8dp"
