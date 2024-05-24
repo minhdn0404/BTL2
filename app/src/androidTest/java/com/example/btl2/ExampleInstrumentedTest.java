@@ -2,12 +2,6 @@ package com.example.btl2;
 
 import android.content.Context;
 
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -23,15 +17,6 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-
-
-    public ActivityScenarioRule<MainActivity> activityScenarioRule = new ActivityScenarioRule<>(MainActivity.class);
-
-    public void buttonClickChangesTextViewText(){
-        Espresso.onView(ViewMatchers.withId(R.id.button_login)).perform(ViewActions.click())
-                .check(ViewAssertions.matches(ViewMatchers.withText("Bam vao nut Login thanh cong")));
-
-    }
     @Test
     public void useAppContext() {
         // Context of the app under test.
